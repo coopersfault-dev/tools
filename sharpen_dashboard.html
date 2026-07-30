@@ -68,6 +68,22 @@
 </style>
 </head>
 <body>
+
+<div id="authGate" style="max-width:340px;margin:60px auto;padding:0 16px;">
+  <h1 style="margin-bottom:4px;">Sharpen block</h1>
+  <p class="sub" id="authSub">Sign in to your account</p>
+  <div class="card">
+    <div class="row">
+      <div class="full"><label>Email</label><input id="authEmail" type="email" autocomplete="email"></div>
+      <div class="full"><label>Password</label><input id="authPass" type="password" autocomplete="current-password"></div>
+    </div>
+    <button class="primary" id="authSubmit">Sign in</button>
+    <p class="hint" id="authToggle" style="cursor:pointer;text-decoration:underline;margin-top:10px;">Need an account? Sign up</p>
+    <p class="hint" id="authMsg"></p>
+  </div>
+</div>
+
+<div id="app" style="display:none;">
 <h1>Sharpen block</h1>
 <p class="sub">Aug 7&ndash;23 &middot; FTP 220 &rarr; 235-240W &middot; W/kg is the lever now</p>
 
@@ -208,9 +224,20 @@
   <button id="importBtn">Import data</button>
   <input id="importFile" type="file" accept="application/json" style="display:none;">
 </div>
+<p class="hint" style="margin-top:14px;">Signed in as <span id="acctEmail"></span></p>
+<div class="toolbar">
+  <button id="signOutBtn">Sign out</button>
+</div>
+
+</div>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2/dist/umd/supabase.min.js"></script>
 <script>
+const SUPABASE_URL = 'https://wtemupexoqqwvlptpyea.supabase.co';
+const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_NKabWe7XRHz9h3Po26ousg_WGlveXkM';
+const sb = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
+
 const KEY = 'sharpen_block_master';
 const LB2KG = 0.4536;
 const TARGET = { kcal: 2100, p: 165, c: 210, f: 65 };
@@ -278,8 +305,84 @@ function load() {
     return s; } } catch(e){}
   const seed = JSON.parse(JSON.stringify(SEED)); seed.saved = DEFAULT_SAVED.slice(); seed.config = {...DEFAULT_CONFIG}; seed.dailyTotals = {}; seed.checklist = {}; seed.plan = {}; return seed;
 }
-function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} }
-let state = load();
+function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} pushState(); }
+
+// A brand-new account starts here (not with the sample data above, which is just historical seed content).
+function emptyState(){
+  return {
+    weights: [{ date: todayKey(), lb: DEFAULT_CONFIG.weightLb }],
+    ftp: [{ date: todayKey(), w: 200, note: 'starting estimate' }],
+    rides: [], food: {}, saved: DEFAULT_SAVED.slice(), dailyTotals: {},
+    checklist: {}, plan: {}, config: { ...DEFAULT_CONFIG }
+  };
+}
+
+async function pullState(){
+  const { data: { user } } = await sb.auth.getUser();
+  if(!user) return null;
+  const uid = user.id;
+  const [w,f,r,fi,sm,ck,pl,cfg] = await Promise.all([
+    sb.from('weights').select('date,lb').eq('user_id',uid),
+    sb.from('ftp_tests').select('date,watts,note').eq('user_id',uid),
+    sb.from('rides').select('*').eq('user_id',uid),
+    sb.from('food_items').select('*').eq('user_id',uid),
+    sb.from('saved_meals').select('*').eq('user_id',uid),
+    sb.from('daily_checklist').select('*').eq('user_id',uid),
+    sb.from('daily_plan').select('*').eq('user_id',uid),
+    sb.from('user_config').select('*').eq('user_id',uid).maybeSingle()
+  ]);
+  const anyData = [w,f,r,fi,sm,ck,pl].some(res => (res.data||[]).length) || cfg.data;
+  if(!anyData) return emptyState();
+  const s = { weights:[], ftp:[], rides:[], food:{}, saved:[], dailyTotals:{}, checklist:{}, plan:{}, config:{...DEFAULT_CONFIG} };
+  (w.data||[]).forEach(x=>s.weights.push({date:x.date, lb:+x.lb}));
+  (f.data||[]).forEach(x=>s.ftp.push({date:x.date, w:+x.watts, note:x.note}));
+  (r.data||[]).forEach(x=>s.rides.push({date:x.date,title:x.title,ef:x.ef,vi:x.vi,type:x.type,z4min:x.z4min,z5min:x.z5min,surges:x.surges,kcal:x.kcal,burnSrc:x.burn_src,dur:x.dur,temp:x.temp,note:x.note}));
+  (fi.data||[]).forEach(x=>{ if(!s.food[x.date]) s.food[x.date]={items:[]}; s.food[x.date].items.push({name:x.name,kcal:x.kcal,p:x.protein,c:x.carbs,f:x.fat}); });
+  (sm.data||[]).forEach(x=>s.saved.push({name:x.name,kcal:x.kcal,p:x.protein,c:x.carbs,f:x.fat}));
+  (ck.data||[]).forEach(x=>{ s.checklist[x.date]={done:x.done||{}, custom:x.custom||[]}; });
+  (pl.data||[]).forEach(x=>{ s.plan[x.date]={what:x.what||'', where:x.where_||''}; });
+  if(!s.weights.length) s.weights = emptyState().weights;
+  if(!s.ftp.length) s.ftp = emptyState().ftp;
+  if(!s.saved.length) s.saved = DEFAULT_SAVED.slice();
+  if(cfg.data) s.config = { baseline:cfg.data.baseline, weightLb:+cfg.data.weight_lb, age:cfg.data.age };
+  return s;
+}
+
+async function pushState(){
+  const { data: { user } } = await sb.auth.getUser();
+  if(!user || !state) return;
+  const uid = user.id;
+  try{
+    await sb.from('weights').delete().eq('user_id', uid);
+    if(state.weights.length) await sb.from('weights').insert(state.weights.map(w=>({user_id:uid,date:w.date,lb:w.lb})));
+
+    await sb.from('ftp_tests').delete().eq('user_id', uid);
+    if(state.ftp.length) await sb.from('ftp_tests').insert(state.ftp.map(f=>({user_id:uid,date:f.date,watts:f.w,note:f.note||null})));
+
+    await sb.from('rides').delete().eq('user_id', uid);
+    if(state.rides.length) await sb.from('rides').insert(state.rides.map(r=>({user_id:uid,date:r.date,title:r.title||null,ef:r.ef,vi:r.vi,type:r.type,z4min:r.z4min,z5min:r.z5min,surges:r.surges,kcal:r.kcal,burn_src:r.burnSrc,dur:r.dur,temp:r.temp,note:r.note})));
+
+    const foodRows=[];
+    Object.keys(state.food).forEach(d=>{ (state.food[d].items||[]).forEach(it=>foodRows.push({user_id:uid,date:d,name:it.name,kcal:it.kcal,protein:it.p,carbs:it.c,fat:it.f})); });
+    await sb.from('food_items').delete().eq('user_id', uid);
+    if(foodRows.length) await sb.from('food_items').insert(foodRows);
+
+    await sb.from('saved_meals').delete().eq('user_id', uid);
+    if((state.saved||[]).length) await sb.from('saved_meals').insert(state.saved.map(m=>({user_id:uid,name:m.name,kcal:m.kcal,protein:m.p,carbs:m.c,fat:m.f})));
+
+    await sb.from('daily_checklist').delete().eq('user_id', uid);
+    const chkRows = Object.keys(state.checklist).map(d=>({user_id:uid,date:d,done:state.checklist[d].done||{},custom:state.checklist[d].custom||[]}));
+    if(chkRows.length) await sb.from('daily_checklist').insert(chkRows);
+
+    await sb.from('daily_plan').delete().eq('user_id', uid);
+    const planRows = Object.keys(state.plan).map(d=>({user_id:uid,date:d,what:state.plan[d].what||null,where_:state.plan[d].where||null}));
+    if(planRows.length) await sb.from('daily_plan').insert(planRows);
+
+    await sb.from('user_config').upsert({user_id:uid, baseline:state.config.baseline, weight_lb:state.config.weightLb, age:state.config.age});
+  }catch(e){ console.error('Supabase sync failed', e); }
+}
+
+let state = null;
 
 function todayKey(){ const d=new Date(); return d.getFullYear()+'-'+String(d.getMonth()+1).padStart(2,'0')+'-'+String(d.getDate()).padStart(2,'0'); }
 let viewDate = todayKey();
@@ -683,8 +786,68 @@ document.getElementById('importFile').onchange=(e)=>{
   r.readAsText(file);
 };
 
-archiveAndTrim(); save(state);
-renderAll();
+// --- Auth ---
+function showApp(email){
+  document.getElementById('authGate').style.display='none';
+  document.getElementById('app').style.display='block';
+  const ae=document.getElementById('acctEmail'); if(ae) ae.textContent=email||'';
+}
+function showAuth(){
+  document.getElementById('authGate').style.display='block';
+  document.getElementById('app').style.display='none';
+}
+
+async function initApp(){
+  const remote = await pullState();
+  state = remote || emptyState();
+  archiveAndTrim();
+  try{ localStorage.setItem(KEY, JSON.stringify(state)); }catch(e){}
+  renderAll();
+}
+
+let authMode = 'signin';
+const authEmailEl = document.getElementById('authEmail');
+const authPassEl = document.getElementById('authPass');
+const authSubmitEl = document.getElementById('authSubmit');
+const authToggleEl = document.getElementById('authToggle');
+const authMsgEl = document.getElementById('authMsg');
+const authSubEl = document.getElementById('authSub');
+
+authToggleEl.onclick = () => {
+  authMode = authMode === 'signin' ? 'signup' : 'signin';
+  authSubmitEl.textContent = authMode === 'signin' ? 'Sign in' : 'Create account';
+  authToggleEl.textContent = authMode === 'signin' ? 'Need an account? Sign up' : 'Already have an account? Sign in';
+  authSubEl.textContent = authMode === 'signin' ? 'Sign in to your account' : 'Create your account';
+  authMsgEl.textContent = '';
+};
+
+authSubmitEl.onclick = async () => {
+  const email = authEmailEl.value.trim(), pass = authPassEl.value;
+  if(!email || !pass){ authMsgEl.style.color = 'var(--amber)'; authMsgEl.textContent = 'Enter email and password.'; return; }
+  authSubmitEl.disabled = true;
+  if(authMode === 'signin'){
+    const { error } = await sb.auth.signInWithPassword({ email, password: pass });
+    if(error){ authMsgEl.style.color = '#e5484d'; authMsgEl.textContent = error.message; }
+  } else {
+    const { error } = await sb.auth.signUp({ email, password: pass });
+    if(error){ authMsgEl.style.color = '#e5484d'; authMsgEl.textContent = error.message; }
+    else { authMsgEl.style.color = 'var(--teal)'; authMsgEl.textContent = 'Check your email to confirm your account, then sign in.'; }
+  }
+  authSubmitEl.disabled = false;
+};
+
+document.getElementById('signOutBtn').onclick = () => sb.auth.signOut();
+
+sb.auth.onAuthStateChange((event, session) => {
+  if(event === 'SIGNED_IN'){ showApp(session.user.email); initApp(); }
+  if(event === 'SIGNED_OUT'){ state = null; showAuth(); }
+});
+
+(async () => {
+  const { data: { session } } = await sb.auth.getSession();
+  if(session){ showApp(session.user.email); await initApp(); }
+  else { showAuth(); }
+})();
 </script>
 </body>
 </html>
