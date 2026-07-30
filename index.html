@@ -1,0 +1,61 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Tools</title>
+<style>
+  :root {
+    --bg: #0e1116;
+    --surface: #161b22;
+    --surface-2: #1c232d;
+    --border: #2a333f;
+    --text: #e6edf3;
+    --text-dim: #9aa7b4;
+    --text-mute: #6b7684;
+    --accent: #58a6ff;
+  }
+  * { box-sizing: border-box; -webkit-tap-highlight-color: transparent; }
+  body {
+    margin: 0; background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", system-ui, sans-serif;
+    font-size: 16px; line-height: 1.5; padding: 16px; max-width: 640px; margin: 0 auto;
+  }
+  h1 { font-size: 20px; font-weight: 600; margin: 0 0 2px; }
+  .sub { color: var(--text-dim); font-size: 13px; margin: 0 0 24px; }
+  .list { display: flex; flex-direction: column; gap: 10px; }
+  a.card {
+    display: block; background: var(--surface); border: 0.5px solid var(--border);
+    border-radius: 12px; padding: 14px 16px; text-decoration: none; color: var(--text);
+  }
+  a.card:active { transform: scale(0.99); }
+  a.card .t { font-size: 15px; font-weight: 600; }
+  a.card .d { font-size: 13px; color: var(--text-dim); margin-top: 3px; }
+  .empty { color: var(--text-mute); font-size: 13px; border: 1px dashed var(--border); border-radius: 12px; padding: 14px 16px; }
+  .footer { margin-top: 28px; font-size: 12px; color: var(--text-mute); line-height: 1.6; }
+</style>
+</head>
+<body>
+<h1>Tools</h1>
+<p class="sub">Personal dashboard collection</p>
+
+<div class="list">
+  <a class="card" href="sharpen_dashboard.html">
+    <div class="t">Sharpen block</div>
+    <div class="d">Training &amp; nutrition tracker &mdash; W/kg trend, macros, food log</div>
+  </a>
+
+  <!-- Add more tools here as you create them, same pattern:
+  <a class="card" href="new_tool.html">
+    <div class="t">Tool name</div>
+    <div class="d">One-line description</div>
+  </a>
+  -->
+</div>
+
+<div class="footer">
+  Each tool stores its data separately in this browser. Export from inside a tool before switching devices.
+</div>
+
+</body>
+</html>
