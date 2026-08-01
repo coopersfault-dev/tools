@@ -218,6 +218,7 @@
     <button data-quick="Dog walk (PM)" class="quickAdd" style="width:auto;padding:5px 11px;font-size:13px;">+ Dog walk PM</button>
     <button data-quick="Hotel circuit" class="quickAdd" style="width:auto;padding:5px 11px;font-size:13px;">+ Hotel circuit</button>
   </div>
+  <div id="activityList" style="margin-top:4px;"></div>
   <div class="row" style="margin-top:10px;">
     <div class="full"><label>Add another item</label><input id="chkAdd" placeholder="e.g. stretch, foam roll"></div>
   </div>
@@ -236,6 +237,16 @@
   </div>
   <button id="wAdd" class="primary">Log weight</button>
   <p class="hint" id="wLast"></p>
+</div>
+
+<div class="card" style="margin-bottom:16px;">
+  <div class="row">
+    <div><label>FTP (W)</label><input id="ftpW" type="number" inputmode="numeric" placeholder="220"></div>
+    <div><label>Date</label><input id="ftpDate" type="date"></div>
+    <div class="full"><label>Note</label><input id="ftpNote" placeholder="20-min KICKR test"></div>
+  </div>
+  <button id="ftpAdd" class="primary">Log FTP</button>
+  <p class="hint" id="ftpLast"></p>
 </div>
 
 </div>
@@ -654,19 +665,25 @@ function renderSaved(){
 }
 
 function renderRides(){
-  document.getElementById('logCount').textContent = '('+state.rides.length+')';
-  document.getElementById('rideList').innerHTML = sortByDate(state.rides,'desc').map(r=>{
+  const rides = state.rides.filter(r=>r.type!=='walk');
+  document.getElementById('logCount').textContent = '('+rides.length+')';
+  document.getElementById('rideList').innerHTML = sortByDate(rides,'desc').map(r=>{
     const badge = r.type==='surgy'
       ? '<span style="font-size:10px;color:var(--amber);border:0.5px solid var(--amber);border-radius:4px;padding:1px 5px;margin-left:6px;">surgy</span>'
       : (r.type==='steady' ? '<span style="font-size:10px;color:var(--teal);border:0.5px solid var(--teal);border-radius:4px;padding:1px 5px;margin-left:6px;">steady</span>' : '');
     const rc = recoveryCost(r);
     const flag = rc ? `<span style="font-size:10px;color:${rc.color};border:0.5px solid ${rc.color};border-radius:4px;padding:1px 5px;margin-left:6px;">${rc.flag}</span>` : '';
     const rcLine = rc ? `<div class="m" style="color:${rc.color};">${rc.msg} <span style="color:var(--text-mute);">(${rc.why})</span></div>` : '';
+    const idx = state.rides.indexOf(r);
     return `<div class="item"><div><div class="t" style="font-weight:500;">${r.title} <span style="font-size:12px;color:var(--text-mute);font-weight:400;">${r.date}</span>${badge}${flag}</div>
     <div class="m">${r.ef?'EF '+r.ef.toFixed(3)+' \u00b7 ':''}${r.vi?'VI '+r.vi.toFixed(2)+' \u00b7 ':''}${r.kcal?Math.round(r.kcal)+' kcal'+(r.burnSrc==='HR-est'?'(est)':'')+' \u00b7 ':''}${r.dur?r.dur+' \u00b7 ':''}${r.temp||''}</div>
     ${rcLine}
-    ${r.note?'<div class="m">'+r.note+'</div>':''}</div></div>`;
+    ${r.note?'<div class="m">'+r.note+'</div>':''}</div>
+    <button class="del" data-ride="${idx}">&times;</button></div>`;
   }).join('');
+  document.getElementById('rideList').querySelectorAll('[data-ride]').forEach(b=>b.onclick=()=>{
+    if(confirm('Delete this ride/workout entry?')){ state.rides.splice(+b.dataset.ride,1); save(state); renderRides(); }
+  });
 }
 
 let chkDate = todayKey();
@@ -717,6 +734,7 @@ function renderChecklist(){
   }).join('');
 
   document.getElementById('checklist').innerHTML = fixed + custom;
+  renderActivities();
 
   const wrap = document.getElementById('checklist');
   wrap.querySelectorAll('[data-chk]').forEach(cb=>cb.onchange=()=>{
@@ -737,15 +755,59 @@ function addChecklistItem(text){
   const tk = chkDate;
   if(!state.checklist[tk]) state.checklist[tk]={done:{},custom:[]};
   if(!state.checklist[tk].custom) state.checklist[tk].custom=[];
+  if(state.checklist[tk].custom.includes(text)) return; // avoid duplicate checklist lines
   state.checklist[tk].custom.push(text);
   save(state); renderChecklist();
 }
 
+// Dog walk kcal assumptions: brisk pace, ~4.25 kcal/min
+const DOG_WALK_PRESETS = {
+  'Dog walk (AM)': { dur:'25min', kcal:106 },
+  'Dog walk (PM)': { dur:'15min', kcal:64 }
+};
+
+function logActivity(text){
+  const tk = chkDate;
+  addChecklistItem(text);
+  // also mark it done, since logging = doing
+  if(!state.checklist[tk]) state.checklist[tk]={done:{},custom:[]};
+  const idx = state.checklist[tk].custom.indexOf(text);
+  if(idx>-1){ if(!state.checklist[tk].done) state.checklist[tk].done={}; state.checklist[tk].done['custom'+idx]=true; }
+
+  const preset = DOG_WALK_PRESETS[text];
+  if(preset){
+    const already = state.rides.some(r=>r.date===tk && r.title===text);
+    if(already){ alert(text+' is already logged for '+prettyDate(tk)+'. Delete it from the ride log first if you want to re-log it.'); }
+    else{
+      state.rides.push({ date:tk, title:text, ef:null, vi:null, type:'walk', z4min:null, z5min:null, surges:null,
+        kcal:preset.kcal, burnSrc:'estimate', dur:preset.dur, temp:'', note:'auto-logged, brisk pace ~4.25 kcal/min' });
+    }
+  }
+  save(state); renderChecklist(); renderActivities();
+}
+
+function renderActivities(){
+  const el = document.getElementById('activityList'); if(!el) return;
+  const tk = chkDate;
+  const acts = state.rides.filter(r=>r.type==='walk' && r.date===tk);
+  if(!acts.length){ el.innerHTML=''; return; }
+  el.innerHTML = acts.map(a=>{
+    const idx = state.rides.indexOf(a);
+    return `<div class="item" style="padding:6px 0;"><div><div class="t">${a.title}</div>
+    <div class="m">${a.kcal} kcal \u00b7 ${a.dur}</div></div>
+    <button class="del" data-act="${idx}">&times;</button></div>`;
+  }).join('');
+  el.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{
+    state.rides.splice(+b.dataset.act,1); save(state); renderActivities(); renderFood(); drawBalance();
+  });
+}
+
 function renderAll(){
-  renderStats(); renderFood(); renderSaved(); renderRides(); renderChecklist(); renderWeek(); renderWeightLast();
+  renderStats(); renderFood(); renderSaved(); renderRides(); renderChecklist(); renderWeek(); renderWeightLast(); renderFtpLast();
   draw(); drawBalance(); drawMacros();
   const cb=document.getElementById('cfgBaseline'); if(cb) cb.value=state.config.baseline;
   const wd=document.getElementById('wDate'); if(wd && !wd.value) wd.value=todayKey();
+  const fd=document.getElementById('ftpDate'); if(fd && !fd.value) fd.value=todayKey();
 }
 
 document.getElementById('fAdd').onclick=()=>{
@@ -798,7 +860,10 @@ document.getElementById('chkNext').onclick=()=>{ if(chkDate<todayKey()){ chkDate
 document.getElementById('chkToday').onclick=()=>{ chkDate=todayKey(); renderChecklist(); };
 
 // Quick-add + custom checklist items
-document.querySelectorAll('.quickAdd').forEach(b=>b.onclick=()=>addChecklistItem(b.dataset.quick));
+document.querySelectorAll('.quickAdd').forEach(b=>b.onclick=()=>{
+  if(DOG_WALK_PRESETS[b.dataset.quick]) logActivity(b.dataset.quick);
+  else addChecklistItem(b.dataset.quick);
+});
 document.getElementById('chkAddBtn').onclick=()=>{
   const el=document.getElementById('chkAdd');
   addChecklistItem(el.value.trim()); el.value='';
@@ -891,6 +956,23 @@ function renderWeightLast(){
   const w=latest(state.weights);
   const f=latest(state.ftp);
   el.textContent = `Last logged: ${w.lb.toFixed(1)} lb on ${w.date} \u00b7 W/kg ${(f.w/(w.lb*LB2KG)).toFixed(2)}`;
+}
+
+document.getElementById('ftpAdd').onclick=()=>{
+  const w=parseInt(document.getElementById('ftpW').value);
+  const d=document.getElementById('ftpDate').value || todayKey();
+  const note=document.getElementById('ftpNote').value.trim();
+  if(isNaN(w)||w<=0){ alert('Enter an FTP value in watts.'); return; }
+  state.ftp = state.ftp.filter(f=>f.date!==d);
+  state.ftp.push({ date:d, w, note: note||null });
+  save(state);
+  document.getElementById('ftpW').value=''; document.getElementById('ftpNote').value='';
+  renderStats(); draw(); renderWeightLast(); renderFtpLast();
+};
+function renderFtpLast(){
+  const el=document.getElementById('ftpLast'); if(!el) return;
+  const f=latest(state.ftp);
+  el.textContent = `Last logged: ${f.w}W on ${f.date}${f.note?' \u00b7 '+f.note:''}`;
 }
 
 document.getElementById('exportBtn').onclick=()=>{
