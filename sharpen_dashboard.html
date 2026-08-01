@@ -144,6 +144,15 @@
   <label style="display:flex;align-items:center;gap:6px;margin-top:8px;font-size:13px;color:var(--text-dim);"><input type="checkbox" id="fSave" style="width:auto;"> Save as a reusable meal</label>
 </div>
 
+<details style="margin-bottom:16px;">
+  <summary>Paste a day's meals</summary>
+  <p class="hint" style="margin:6px 0 8px;">One item per line, applies to the date shown above (<span id="foodPasteDate"></span>): <code>name | calories | protein g | carbs g | fat g</code> &mdash; e.g. <code>Chicken burrito bowl | 620 | 48 | 55 | 18</code>. Leave protein/carbs/fat blank if you don't know them.</p>
+  <textarea id="foodPaste" rows="6" placeholder="Chicken burrito bowl | 620 | 48 | 55 | 18&#10;Greek yogurt | 150 | 20 | 10 | 3&#10;Coffee with cream | 40" style="width:100%;font-family:inherit;font-size:14px;background:var(--surface-2);border:0.5px solid var(--border);border-radius:8px;padding:8px;color:var(--text);"></textarea>
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button id="foodPasteSave" class="primary" style="width:auto;padding:7px 16px;">Add these meals</button>
+  </div>
+</details>
+
 </div>
 
 <div class="dashCard" data-card="balance">
@@ -233,6 +242,14 @@
 
 <div class="dashCard" data-card="rides">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
+<details style="margin-bottom:12px;">
+  <summary>Paste a ride or workout</summary>
+  <p class="hint" style="margin:6px 0 8px;">One per line: <code>YYYY-MM-DD | title | duration | calories | notes</code> &mdash; e.g. <code>2026-07-27 | Z2 endurance | 2h10 | 950 | easy spin, felt good</code>. Calories can be left blank.</p>
+  <textarea id="ridePaste" rows="5" placeholder="2026-07-27 | Z2 endurance | 2h10 | 950 | easy spin, felt good&#10;2026-07-29 | VO2 5x3min | 1h05 | 720 | hard, legs were flat" style="width:100%;font-family:inherit;font-size:14px;background:var(--surface-2);border:0.5px solid var(--border);border-radius:8px;padding:8px;color:var(--text);"></textarea>
+  <div style="display:flex;gap:8px;margin-top:8px;">
+    <button id="ridePasteSave" class="primary" style="width:auto;padding:7px 16px;">Add these rides</button>
+  </div>
+</details>
 <details open id="logWrap">
   <summary>Ride log <span id="logCount"></span></summary>
   <div id="rideList"></div>
@@ -585,6 +602,7 @@ function mc(label,val,tgt,unit){
 function renderFood(){
   const tk = viewDate;
   document.getElementById('foodDate').textContent = prettyDate(tk);
+  const fpd = document.getElementById('foodPasteDate'); if(fpd) fpd.textContent = prettyDate(tk);
   const items = (state.food[tk]&&state.food[tk].items)||[];
   const archived = (!items.length && state.dailyTotals[tk]) ? state.dailyTotals[tk] : null;
   const s = archived || items.reduce((a,i)=>({kcal:a.kcal+i.kcal,p:a.p+i.p,c:a.c+i.c,f:a.f+i.f}),{kcal:0,p:0,c:0,f:0});
@@ -805,6 +823,56 @@ document.getElementById('planSave').onclick=()=>{
 };
 document.getElementById('planClear').onclick=()=>{
   if(confirm('Clear the entire plan?')){ state.plan={}; save(state); renderWeek(); renderChecklist(); }
+};
+
+// Paste meals: "name | calories | protein | carbs | fat" (protein/carbs/fat optional) — applies to viewDate
+document.getElementById('foodPasteSave').onclick=()=>{
+  const txt=document.getElementById('foodPaste').value.trim();
+  if(!txt) return;
+  const tk=viewDate; if(!state.food[tk]) state.food[tk]={items:[]};
+  let n=0;
+  txt.split('\n').forEach(line=>{
+    const parts=line.split('|').map(x=>x.trim());
+    const name=parts[0];
+    if(!name) return;
+    state.food[tk].items.push({
+      name,
+      kcal: parseInt(parts[1])||0,
+      p: parseInt(parts[2])||0,
+      c: parseInt(parts[3])||0,
+      f: parseInt(parts[4])||0
+    });
+    n++;
+  });
+  save(state);
+  document.getElementById('foodPaste').value='';
+  renderFood(); drawBalance(); drawMacros();
+  alert(n+' item'+(n===1?'':'s')+' added to '+prettyDate(tk)+'.');
+};
+
+// Paste rides: "YYYY-MM-DD | title | duration | calories | notes" (calories optional)
+document.getElementById('ridePasteSave').onclick=()=>{
+  const txt=document.getElementById('ridePaste').value.trim();
+  if(!txt) return;
+  let n=0;
+  txt.split('\n').forEach(line=>{
+    const parts=line.split('|').map(x=>x.trim());
+    if(parts.length<2) return;
+    const d=parts[0];
+    if(!/^\d{4}-\d{2}-\d{2}$/.test(d)) return;
+    state.rides.push({
+      date:d, title:parts[1]||'', ef:null, vi:null, type:'steady',
+      z4min:null, z5min:null, surges:null,
+      kcal: parts[3] ? (parseInt(parts[3])||0) : null,
+      burnSrc:'estimate', dur:parts[2]||'', temp:'', note:parts[4]||''
+    });
+    n++;
+  });
+  state.rides.sort((a,b)=>a.date<b.date?1:-1);
+  save(state);
+  document.getElementById('ridePaste').value='';
+  renderRides();
+  alert(n+' ride'+(n===1?'':'s')+' added.');
 };
 
 // Weight logging
