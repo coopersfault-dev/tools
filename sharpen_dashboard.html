@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>Ledger of Small Miracles</title>
+<title>Sharpen Block Dashboard</title>
 <style>
   :root {
     --bg: #0e1116;
@@ -70,15 +70,12 @@
   #cardStack.editMode .dashCard.cardHidden { opacity: 0.45; }
   .cardCtrl button.ctrlBtn { background: var(--surface-2); }
   .cardCtrl button.ctrlBtn:disabled { opacity: 0.3; }
-  .hintIcon { display:inline-flex; align-items:center; justify-content:center; width:16px; height:16px; border-radius:50%;
-    border:1px solid var(--text-mute); color:var(--text-mute); font-size:11px; font-weight:600; cursor:help; vertical-align:middle; margin-left:2px; }
-  body.hintsOff .hintIcon { display:none; }
 </style>
 </head>
 <body>
 
 <div id="authGate" style="max-width:340px;margin:60px auto;padding:0 16px;">
-  <h1 style="margin-bottom:4px;">Ledger of Small Miracles</h1>
+  <h1 style="margin-bottom:4px;">Sharpen block</h1>
   <p class="sub" id="authSub">Sign in to your account</p>
   <div class="card">
     <div class="row">
@@ -92,43 +89,14 @@
 </div>
 
 <div id="app" style="display:none;">
-<h1>Ledger of Small Miracles</h1>
-<p class="sub">Training log, nutrition, and daily protocol &mdash; all in one place.</p>
+<h1>Sharpen block</h1>
+<p class="sub">Aug 7&ndash;23 &middot; FTP 220 &rarr; 235-240W &middot; W/kg is the lever now</p>
 
-<div style="display:flex;justify-content:flex-end;gap:8px;margin-bottom:8px;">
-  <button id="hintsToggle" style="width:auto;padding:6px 12px;font-size:13px;">Hints: on</button>
+<div style="display:flex;justify-content:flex-end;margin-bottom:8px;">
   <button id="layoutToggle" style="width:auto;padding:6px 12px;font-size:13px;">Edit layout</button>
 </div>
 
 <div id="cardStack">
-
-<div class="dashCard" data-card="help">
-<div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<details id="helpDetails">
-  <summary><h2 style="display:inline;">Start here</h2></summary>
-  <div id="onboardWrap"></div>
-  <div class="card" style="margin-top:10px;">
-    <p style="font-size:14px;line-height:1.6;margin-top:0;">
-      This tracks four things: what you eat, how you ride/move, your weight and FTP, and a daily checklist.
-      Everything feeds <b>The Ledger</b> below (calories in vs. out) and the <b>W/kg</b> number up top.
-    </p>
-    <p style="font-size:14px;line-height:1.6;">
-      Fastest way in: use the <b>paste</b> boxes (in Provisions, The Week Ahead, and Suffering, Logged) to add
-      a whole day/week at once instead of typing one field at a time. Every card has a <span class="hintIcon" title="Like this one">?</span> icon
-      if you forget what something does &mdash; turn those off with the <b>Hints</b> button above if they get in the way.
-    </p>
-    <p style="font-size:14px;line-height:1.6;margin-bottom:0;">
-      Cards can be reordered or hidden with <b>Edit layout</b> (top right). Your data lives in your account, not
-      just this browser, so it follows you across devices once you're signed in.
-    </p>
-    <div class="toolbar" style="margin-top:12px;">
-      <button id="dlGuide">Download full guide</button>
-      <button id="dlSample">Download sample paste data</button>
-    </div>
-    <p class="hint" style="margin-top:8px;">The sample file has ready-to-copy lines matching each paste box's format &mdash; open it, copy a block, paste it in, see what happens.</p>
-  </div>
-</details>
-</div>
 
 <div class="dashCard" data-card="stats">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
@@ -137,7 +105,7 @@
 
 <div class="dashCard" data-card="wkg">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>The W/kg Watch <span class="hintIcon" title="Working FTP divided by body weight in kg. The single number that matters most for climbing and racing.">?</span></h2>
+<h2>W/kg trend</h2>
 <div style="display:flex;gap:16px;font-size:12px;color:var(--text-dim);margin-bottom:8px;">
   <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#3987e5;vertical-align:middle;"></span> W/kg</span>
   <span><span style="display:inline-block;width:12px;height:2px;background:#199e70;vertical-align:middle;"></span> Target 3.65</span>
@@ -150,7 +118,7 @@
 
 <div class="dashCard" data-card="food">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>Provisions <span class="hintIcon" title="Log what you ate. Use the +/- arrows to move between days, or paste a whole day at once below.">?</span> <span id="foodDate" style="font-size:13px;color:var(--text-mute);font-weight:400;"></span></h2>
+<h2>Food <span id="foodDate" style="font-size:13px;color:var(--text-mute);font-weight:400;"></span></h2>
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
   <button id="foodPrev" style="width:auto;padding:6px 12px;">&larr;</button>
   <button id="foodToday" style="width:auto;padding:6px 12px;font-size:13px;">Today</button>
@@ -189,11 +157,10 @@
 
 <div class="dashCard" data-card="balance">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>The Ledger <span class="hintIcon" title="Calories in vs. calories out, stacked so you can see how much of your 'out' came from baseline living vs. actual activity. Hover any bar for the breakdown.">?</span> <span style="font-size:12px;color:var(--text-mute);font-weight:400;">last 14 days</span></h2>
+<h2>Calorie balance <span style="font-size:12px;color:var(--text-mute);font-weight:400;">last 14 days</span></h2>
 <div style="display:flex;gap:16px;font-size:12px;color:var(--text-dim);margin-bottom:8px;flex-wrap:wrap;">
   <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#3987e5;vertical-align:middle;"></span> Consumed</span>
-  <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#eb6834;vertical-align:middle;"></span> Baseline burn</span>
-  <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#a371f7;vertical-align:middle;"></span> Activity burn</span>
+  <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#eb6834;vertical-align:middle;"></span> Burned (BMR+ride)</span>
   <span><span style="display:inline-block;width:12px;height:2px;background:#199e70;vertical-align:middle;"></span> Net (deficit &darr; / surplus &uarr;)</span>
 </div>
 <div style="position:relative;height:220px;margin-bottom:8px;">
@@ -205,7 +172,7 @@
 
 <div class="dashCard" data-card="macros">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>The Fine Print <span class="hintIcon" title="Protein, carbs, and fat over the last two weeks \u2014 the detail behind the calorie totals.">?</span> <span style="font-size:12px;color:var(--text-mute);font-weight:400;">last 14 days</span></h2>
+<h2>Macro trend <span style="font-size:12px;color:var(--text-mute);font-weight:400;">last 14 days</span></h2>
 <div style="display:flex;gap:16px;font-size:12px;color:var(--text-dim);margin-bottom:8px;flex-wrap:wrap;">
   <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#199e70;vertical-align:middle;"></span> Protein</span>
   <span><span style="display:inline-block;width:10px;height:10px;border-radius:2px;background:#3987e5;vertical-align:middle;"></span> Carbs</span>
@@ -219,7 +186,7 @@
 
 <div class="dashCard" data-card="week">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>The Week Ahead <span class="hintIcon" title="Your training plan for the next 7 days. Paste a whole week at once below, or it'll just show a dash for days with nothing planned.">?</span></h2>
+<h2>The week ahead</h2>
 <div class="card" style="margin-bottom:10px;">
   <div id="weekView"></div>
 </div>
@@ -237,7 +204,7 @@
 
 <div class="dashCard" data-card="checklist">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>Small Miracles, Daily <span class="hintIcon" title="Your daily checklist. The three mobility items are fixed reminders; add your own below, or use the quick-add buttons for dog walks and hotel workouts (these also log calories burned).">?</span> <span id="checkDate" style="font-size:13px;color:var(--text-mute);font-weight:400;"></span></h2>
+<h2>Today <span id="checkDate" style="font-size:13px;color:var(--text-mute);font-weight:400;"></span></h2>
 <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;">
   <button id="chkPrev" style="width:auto;padding:6px 12px;">&larr;</button>
   <button id="chkToday" style="width:auto;padding:6px 12px;font-size:13px;">Today</button>
@@ -251,7 +218,6 @@
     <button data-quick="Dog walk (PM)" class="quickAdd" style="width:auto;padding:5px 11px;font-size:13px;">+ Dog walk PM</button>
     <button data-quick="Hotel circuit" class="quickAdd" style="width:auto;padding:5px 11px;font-size:13px;">+ Hotel circuit</button>
   </div>
-  <div id="activityList" style="margin-top:4px;"></div>
   <div class="row" style="margin-top:10px;">
     <div class="full"><label>Add another item</label><input id="chkAdd" placeholder="e.g. stretch, foam roll"></div>
   </div>
@@ -262,7 +228,7 @@
 
 <div class="dashCard" data-card="weight">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>The Body of Evidence <span class="hintIcon" title="Morning weight and FTP tests both live here \u2014 together they drive the W/kg number at the top of the page.">?</span></h2>
+<h2>Weight</h2>
 <div class="card" style="margin-bottom:16px;">
   <div class="row">
     <div><label>Morning weight (lb)</label><input id="wLb" type="number" step="0.1" inputmode="decimal" placeholder="154.0"></div>
@@ -272,21 +238,10 @@
   <p class="hint" id="wLast"></p>
 </div>
 
-<div class="card" style="margin-bottom:16px;">
-  <div class="row">
-    <div><label>FTP (W)</label><input id="ftpW" type="number" inputmode="numeric" placeholder="220"></div>
-    <div><label>Date</label><input id="ftpDate" type="date"></div>
-    <div class="full"><label>Note</label><input id="ftpNote" placeholder="20-min KICKR test"></div>
-  </div>
-  <button id="ftpAdd" class="primary">Log FTP</button>
-  <p class="hint" id="ftpLast"></p>
-</div>
-
 </div>
 
 <div class="dashCard" data-card="rides">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
-<h2>Suffering, Logged <span class="hintIcon" title="Every ride and workout. Paste a whole batch at once below \u2014 calories are optional but feed straight into The Ledger. Each entry has a delete (\u00d7) button.">?</span></h2>
 <details style="margin-bottom:12px;">
   <summary>Paste a ride or workout</summary>
   <p class="hint" style="margin:6px 0 8px;">One per line: <code>YYYY-MM-DD | title | duration | calories | notes</code> &mdash; e.g. <code>2026-07-27 | Z2 endurance | 2h10 | 950 | easy spin, felt good</code>. Calories can be left blank.</p>
@@ -304,7 +259,7 @@
 <div class="dashCard" data-card="meter">
 <div class="cardCtrl" style="display:none;gap:6px;margin-bottom:8px;"><button class="ctrlBtn" data-act="up" style="width:auto;padding:4px 10px;font-size:12px;">&uarr;</button><button class="ctrlBtn" data-act="down" style="width:auto;padding:4px 10px;font-size:12px;">&darr;</button><button class="ctrlBtn" data-act="hide" style="width:auto;padding:4px 10px;font-size:12px;">Hide</button></div>
 
-<h2>Is it me or the meter? <span class="hintIcon" title="Enter your average power and HR from a steady effort to check if your power meter is reading low. Adjusts automatically for heat above 85\u00b0F.">?</span></h2>
+<h2>Is it me or the meter?</h2>
 <p class="hint" style="margin-bottom:10px;">Avg power + HR over a steady segment. Heat-adjusts ~1.2W per &deg;F above 85&deg;F.</p>
 <div class="card">
   <div class="row">
@@ -331,7 +286,7 @@
   </table>
 </details>
 
-<h2>The Archive <span class="hintIcon" title="Your data lives in your account (synced via the cloud), not just this device. Export/import is for moving a backup around or transferring to a new setup.">?</span></h2>
+<h2>Your data</h2>
 <p class="hint">Stored on this device. To move it to another phone or a new thread, export here and import there.</p>
 <div class="toolbar">
   <button id="exportBtn">Export data</button>
@@ -352,15 +307,47 @@ const SUPABASE_URL = 'https://wtemupexoqqwvlptpyea.supabase.co';
 const SUPABASE_PUBLISHABLE_KEY = 'sb_publishable_NKabWe7XRHz9h3Po26ousg_WGlveXkM';
 const sb = supabase.createClient(SUPABASE_URL, SUPABASE_PUBLISHABLE_KEY);
 
-const KEY = 'ledger_master';
+const KEY = 'sharpen_block_master';
 const LB2KG = 0.4536;
-// Shared macro targets \u2014 same for every account right now (not yet per-user editable in the UI).
-const TARGET = { kcal: 2000, p: 150, c: 200, f: 65 };
+const TARGET = { kcal: 2100, p: 165, c: 210, f: 65 };
 
-// Starting point for any brand-new account (editable immediately after signup)
-const DEFAULT_CONFIG = { baseline: 2000, weightLb: 150, age: 30, startFtp: 150 };
+// Calorie balance config (editable via UI; persisted in state.config)
+const DEFAULT_CONFIG = { baseline: 2100, weightLb: 154, age: 53 };
 
-const DEFAULT_SAVED = [];
+const DEFAULT_SAVED = [
+  { name:'Smoothie (ride day)', kcal:608, p:45, c:52, f:26 },
+  { name:'Smoothie (rest day)', kcal:498, p:41, c:46, f:17 },
+  { name:'Sky Club lunch', kcal:540, p:36, c:44, f:28 }
+];
+
+const SEED = {
+  weights: [
+    { date:'2026-06-21', lb:157.0 },{ date:'2026-06-28', lb:156.4 },
+    { date:'2026-07-05', lb:155.6 },{ date:'2026-07-12', lb:155.0 },
+    { date:'2026-07-19', lb:154.3 }
+  ],
+  ftp: [
+    { date:'2026-04-15', w:214, note:'Apr 20-min 225 raw to FTP est' },
+    { date:'2026-06-30', w:220, note:'KICKR test, working FTP confirmed' }
+  ],
+  rides: [
+    { date:'2026-06-30', title:'FTP test KICKR', ef:1.160, vi:null, type:'steady', z4min:20, z5min:0, surges:0, kcal:520, burnSrc:'kJ', dur:'20-min block 225W', temp:'cool basement', note:'felt like a floor' },
+    { date:'2026-07-02', title:'3x12 @200W', ef:1.232, vi:null, type:'steady', z4min:12, z5min:0, surges:0, kcal:680, burnSrc:'kJ', dur:'sweet spot', temp:'indoor', note:'max HR 150, held clean' },
+    { date:'2026-07-04', title:'Group ride 4h37', ef:0.808, vi:null, type:'surgy', z4min:null, z5min:null, surges:null, kcal:2600, burnSrc:'HR-est', dur:'61mi 890m', temp:'95F', note:'longest of rebuild' },
+    { date:'2026-07-09', title:'Long 3h16', ef:0.944, vi:null, type:'steady', z4min:15, z5min:2, surges:1, kcal:1750, burnSrc:'HR-est', dur:'3h16', temp:'86F', note:'15min KOM effort, HR to 164' },
+    { date:'2026-07-18', title:'Group ride (day 1)', ef:1.078, vi:1.66, type:'surgy', z4min:21, z5min:0, surges:6, kcal:1476, burnSrc:'kJ', dur:'2h57 / 44.7mi / 712m', temp:'warm', note:'Elevate: NP240 avg139 VI1.66, maxHR166, EF1.078. HRR-Z4(152-171)=20:35, Z5(171+)=0. Mapped to Coggan ~21min Z4+, ~0 Z5. Hilly, hard.' },
+    { date:'2026-07-19', title:'Group ride (day 2)', ef:1.072, vi:1.48, type:'surgy', z4min:22, z5min:1, surges:5, kcal:1023, burnSrc:'kJ', dur:'3h44 / 53.6mi / 650m', temp:'78-95F', note:'FIT parse: NP137 avg93 VI1.48 maxHR164. Clean ~1% decoupling despite heat + day-2 fatigue. cad 70 (low). Back-to-back with 7/18.' }
+  ],
+  food: {
+    '2026-07-20': { items: [
+      { name:'Morning smoothie (rest)', kcal:498, p:41, c:46, f:17 },
+      { name:'Sky Club lunch', kcal:540, p:36, c:44, f:28 },
+      { name:'Plane snacks (granola + Biscoff)', kcal:210, p:3, c:32, f:8 },
+      { name:'Woolworth dinner (crab cake, lamb, sweet potato mash)', kcal:740, p:49, c:44, f:43 },
+      { name:'2 martinis', kcal:350, p:0, c:4, f:0 }
+    ]}
+  }
+};
 
 const BASELINE = [
   { hr:[115,128], lo:155, hi:178 },
@@ -369,27 +356,65 @@ const BASELINE = [
   { hr:[156,163], lo:225, hi:240 }
 ];
 
-// Fixed daily reminders (always present, shared by every account). Edit these
-// three items in code if you want your own mobility/activation routine here.
+// Fixed daily reminders (always present). Detail shown so you don't have to remember the movements.
 const CHECKLIST_TEMPLATE = [
-  { id:'am', label:'Morning mobility', detail:'e.g. cat/cow, hip openers, activation work \u2014 swap in your own routine' },
-  { id:'pm', label:'Evening mobility', detail:'e.g. gentle stretching, breathing, wind-down' },
-  { id:'mcgill', label:'Core work', detail:'e.g. planks, dead bugs, anti-rotation holds' }
+  { id:'am', label:'AM activation', detail:'cat/cow x10 \u00b7 bird dog 2x8/side \u00b7 glute bridge 2x15 \u00b7 hip-flexor lunge 45s/side' },
+  { id:'pm', label:'PM in-bed mobility', detail:'supine twist 60s/side \u00b7 dead bug 2x10/side \u00b7 glute bridge 2x15' },
+  { id:'mcgill', label:'McGill Big Three', detail:'curl-up 3x8 \u00b7 side plank 3x45s \u00b7 bird dog 3x8/side' }
 ];
 
-function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} pushState(); }
+function load() {
+  try { const r = localStorage.getItem(KEY); if (r) { const s = JSON.parse(r); if(!s.food) s.food={};
+    if(!s.saved) s.saved = DEFAULT_SAVED.slice();
+    if(!s.config) s.config = {...DEFAULT_CONFIG};
+    if(!s.dailyTotals) s.dailyTotals = {};
+    if(!s.checklist) s.checklist = {};
+    if(!s.plan) s.plan = {};
+    (s.rides||[]).forEach(rd=>{ if(rd.type===undefined) rd.type = (rd.vi && rd.vi>1.15) ? 'surgy':'steady'; if(rd.vi===undefined) rd.vi=null; if(rd.z4min===undefined) rd.z4min=null; if(rd.z5min===undefined) rd.z5min=null; if(rd.surges===undefined) rd.surges=null; if(rd.kcal===undefined) rd.kcal=null; if(rd.burnSrc===undefined) rd.burnSrc=null; });
+    return s; } } catch(e){}
+  const seed = JSON.parse(JSON.stringify(SEED)); seed.saved = DEFAULT_SAVED.slice(); seed.config = {...DEFAULT_CONFIG}; seed.dailyTotals = {}; seed.checklist = {}; seed.plan = {}; return seed;
+}
+// --- Cloud sync scheduler -------------------------------------------------
+// pushState() clears each table then re-inserts it. Two of those running at the
+// same time interleave as delete/delete/insert/insert, which silently doubles
+// every row. save() is called from 14 different places and never awaited, so
+// any two quick actions could overlap. The scheduler below guarantees that at
+// most one pushState is ever in flight, and coalesces bursts into a single write.
+let _syncTimer = null, _syncRunning = false, _syncQueued = false;
 
-// Every brand-new account starts here \u2014 no sample rides, food, or history baked in.
+function scheduleSync(){
+  clearTimeout(_syncTimer);
+  _syncTimer = setTimeout(runSync, 400);
+}
+
+async function runSync(){
+  if(_syncRunning){ _syncQueued = true; return; }   // fold into the current run
+  _syncRunning = true;
+  try {
+    await pushState();
+  } finally {
+    _syncRunning = false;
+    if(_syncQueued){ _syncQueued = false; scheduleSync(); }
+  }
+}
+
+function save(s){ try{ localStorage.setItem(KEY, JSON.stringify(s)); }catch(e){} scheduleSync(); }
+
+// Don't let a queued write die with the tab.
+window.addEventListener('beforeunload', () => {
+  if(_syncTimer || _syncQueued) { clearTimeout(_syncTimer); runSync(); }
+});
+
+// A brand-new account starts here (not with the sample data above, which is just historical seed content).
 function emptyState(){
   return {
     weights: [{ date: todayKey(), lb: DEFAULT_CONFIG.weightLb }],
-    ftp: [{ date: todayKey(), w: DEFAULT_CONFIG.startFtp, note: 'starting estimate' }],
+    ftp: [{ date: todayKey(), w: 200, note: 'starting estimate' }],
     rides: [], food: {}, saved: DEFAULT_SAVED.slice(), dailyTotals: {},
     checklist: {}, plan: {}, config: { ...DEFAULT_CONFIG }
   };
 }
 
-let lastPullWasNew = false;
 async function pullState(){
   const { data: { user } } = await sb.auth.getUser();
   if(!user) return null;
@@ -405,7 +430,6 @@ async function pullState(){
     sb.from('user_config').select('*').eq('user_id',uid).maybeSingle()
   ]);
   const anyData = [w,f,r,fi,sm,ck,pl].some(res => (res.data||[]).length) || cfg.data;
-  lastPullWasNew = !anyData;
   if(!anyData) return emptyState();
   const s = { weights:[], ftp:[], rides:[], food:{}, saved:[], dailyTotals:{}, checklist:{}, plan:{}, config:{...DEFAULT_CONFIG} };
   (w.data||[]).forEach(x=>s.weights.push({date:x.date, lb:+x.lb}));
@@ -422,37 +446,46 @@ async function pullState(){
   return s;
 }
 
+// Supabase returns { error } instead of throwing, so a failed write used to
+// slip past the try/catch entirely and vanish without a trace. chk() turns any
+// query error into a real exception so it can't pass silently.
+async function chk(label, q){
+  const res = await q;
+  if(res && res.error) throw new Error(label + ': ' + res.error.message);
+  return res;
+}
+
 async function pushState(){
   const { data: { user } } = await sb.auth.getUser();
   if(!user || !state) return;
   const uid = user.id;
   try{
-    await sb.from('weights').delete().eq('user_id', uid);
-    if(state.weights.length) await sb.from('weights').insert(state.weights.map(w=>({user_id:uid,date:w.date,lb:w.lb})));
+    await chk('weights.delete', sb.from('weights').delete().eq('user_id', uid));
+    if(state.weights.length) await chk('weights.insert', sb.from('weights').insert(state.weights.map(w=>({user_id:uid,date:w.date,lb:w.lb}))));
 
-    await sb.from('ftp_tests').delete().eq('user_id', uid);
-    if(state.ftp.length) await sb.from('ftp_tests').insert(state.ftp.map(f=>({user_id:uid,date:f.date,watts:f.w,note:f.note||null})));
+    await chk('ftp_tests.delete', sb.from('ftp_tests').delete().eq('user_id', uid));
+    if(state.ftp.length) await chk('ftp_tests.insert', sb.from('ftp_tests').insert(state.ftp.map(f=>({user_id:uid,date:f.date,watts:f.w,note:f.note||null}))));
 
-    await sb.from('rides').delete().eq('user_id', uid);
-    if(state.rides.length) await sb.from('rides').insert(state.rides.map(r=>({user_id:uid,date:r.date,title:r.title||null,ef:r.ef,vi:r.vi,type:r.type,z4min:r.z4min,z5min:r.z5min,surges:r.surges,kcal:r.kcal,burn_src:r.burnSrc,dur:r.dur,temp:r.temp,note:r.note})));
+    await chk('rides.delete', sb.from('rides').delete().eq('user_id', uid));
+    if(state.rides.length) await chk('rides.insert', sb.from('rides').insert(state.rides.map(r=>({user_id:uid,date:r.date,title:r.title||null,ef:r.ef,vi:r.vi,type:r.type,z4min:r.z4min,z5min:r.z5min,surges:r.surges,kcal:r.kcal,burn_src:r.burnSrc,dur:r.dur,temp:r.temp,note:r.note}))));
 
     const foodRows=[];
     Object.keys(state.food).forEach(d=>{ (state.food[d].items||[]).forEach(it=>foodRows.push({user_id:uid,date:d,name:it.name,kcal:it.kcal,protein:it.p,carbs:it.c,fat:it.f})); });
-    await sb.from('food_items').delete().eq('user_id', uid);
-    if(foodRows.length) await sb.from('food_items').insert(foodRows);
+    await chk('food_items.delete', sb.from('food_items').delete().eq('user_id', uid));
+    if(foodRows.length) await chk('food_items.insert', sb.from('food_items').insert(foodRows));
 
-    await sb.from('saved_meals').delete().eq('user_id', uid);
-    if((state.saved||[]).length) await sb.from('saved_meals').insert(state.saved.map(m=>({user_id:uid,name:m.name,kcal:m.kcal,protein:m.p,carbs:m.c,fat:m.f})));
+    await chk('saved_meals.delete', sb.from('saved_meals').delete().eq('user_id', uid));
+    if((state.saved||[]).length) await chk('saved_meals.insert', sb.from('saved_meals').insert(state.saved.map(m=>({user_id:uid,name:m.name,kcal:m.kcal,protein:m.p,carbs:m.c,fat:m.f}))));
 
-    await sb.from('daily_checklist').delete().eq('user_id', uid);
+    await chk('daily_checklist.delete', sb.from('daily_checklist').delete().eq('user_id', uid));
     const chkRows = Object.keys(state.checklist).map(d=>({user_id:uid,date:d,done:state.checklist[d].done||{},custom:state.checklist[d].custom||[]}));
-    if(chkRows.length) await sb.from('daily_checklist').insert(chkRows);
+    if(chkRows.length) await chk('daily_checklist.insert', sb.from('daily_checklist').insert(chkRows));
 
-    await sb.from('daily_plan').delete().eq('user_id', uid);
+    await chk('daily_plan.delete', sb.from('daily_plan').delete().eq('user_id', uid));
     const planRows = Object.keys(state.plan).map(d=>({user_id:uid,date:d,what:state.plan[d].what||null,where_:state.plan[d].where||null}));
-    if(planRows.length) await sb.from('daily_plan').insert(planRows);
+    if(planRows.length) await chk('daily_plan.insert', sb.from('daily_plan').insert(planRows));
 
-    await sb.from('user_config').upsert({user_id:uid, baseline:state.config.baseline, weight_lb:state.config.weightLb, age:state.config.age});
+    await chk('user_config.upsert', sb.from('user_config').upsert({user_id:uid, baseline:state.config.baseline, weight_lb:state.config.weightLb, age:state.config.age}));
   }catch(e){ console.error('Supabase sync failed', e); }
 }
 
@@ -554,35 +587,19 @@ function drawBalance(){
   const el=document.getElementById('balanceChart'); if(!el) return;
   const days=last14();
   const consumed=days.map(d=>dayFood(d).kcal);
-  const activity=days.map(d=>dayBurn(d));
-  const baseline=days.map(()=>state.config.baseline);
-  const burned=days.map((d,i)=>baseline[i]+activity[i]);
+  const burned=days.map(d=>state.config.baseline+dayBurn(d));
   const net=days.map((d,i)=>consumed[i]-burned[i]);
   if(balChart) balChart.destroy();
   balChart=new Chart(el,{ data:{ labels:days.map(d=>d.slice(5)),
     datasets:[
-      { type:'bar', data:consumed, backgroundColor:'rgba(57,135,229,0.75)', label:'Consumed', stack:'in', order:2 },
-      { type:'bar', data:baseline, backgroundColor:'rgba(235,104,52,0.55)', label:'Baseline burn', stack:'out', order:2 },
-      { type:'bar', data:activity, backgroundColor:'rgba(163,113,247,0.75)', label:'Activity burn', stack:'out', order:2 },
+      { type:'bar', data:consumed, backgroundColor:'rgba(57,135,229,0.75)', label:'In', order:2 },
+      { type:'bar', data:burned, backgroundColor:'rgba(235,104,52,0.55)', label:'Out', order:2 },
       { type:'line', data:net, borderColor:'#199e70', borderWidth:2, pointRadius:2, tension:0.2, label:'Net', order:1, yAxisID:'y2' }
     ]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},
-      tooltip:{ mode:'index', intersect:false,
-        callbacks:{
-          label:(ctx)=>{
-            if(ctx.dataset.label==='Net') return `Net: ${ctx.parsed.y>0?'+':''}${Math.round(ctx.parsed.y)} kcal`;
-            return `${ctx.dataset.label}: ${Math.round(ctx.parsed.y)} kcal`;
-          },
-          footer:(items)=>{
-            const out = items.filter(i=>i.dataset.label==='Baseline burn'||i.dataset.label==='Activity burn')
-              .reduce((a,i)=>a+i.parsed.y,0);
-            return 'Total out: '+Math.round(out)+' kcal';
-          }
-        } } },
-      interaction:{ mode:'index', intersect:false },
-      scales: { y:{stacked:true,ticks:{color:'#6b7684',font:{size:10}},grid:{color:'rgba(107,118,132,0.12)'}},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
+      scales:{ y:{ticks:{color:'#6b7684',font:{size:10}},grid:{color:'rgba(107,118,132,0.12)'}},
         y2:{position:'right',ticks:{color:'#199e70',font:{size:10}},grid:{display:false},suggestedMin:-1500,suggestedMax:1500},
-        x:{stacked:true,ticks:{color:'#6b7684',font:{size:9},maxRotation:0},grid:{display:false}} } }
+        x:{ticks:{color:'#6b7684',font:{size:9},maxRotation:0},grid:{display:false}} } }
   });
 }
 function drawMacros(){
@@ -675,25 +692,19 @@ function renderSaved(){
 }
 
 function renderRides(){
-  const rides = state.rides.filter(r=>r.type!=='walk');
-  document.getElementById('logCount').textContent = '('+rides.length+')';
-  document.getElementById('rideList').innerHTML = sortByDate(rides,'desc').map(r=>{
+  document.getElementById('logCount').textContent = '('+state.rides.length+')';
+  document.getElementById('rideList').innerHTML = sortByDate(state.rides,'desc').map(r=>{
     const badge = r.type==='surgy'
       ? '<span style="font-size:10px;color:var(--amber);border:0.5px solid var(--amber);border-radius:4px;padding:1px 5px;margin-left:6px;">surgy</span>'
       : (r.type==='steady' ? '<span style="font-size:10px;color:var(--teal);border:0.5px solid var(--teal);border-radius:4px;padding:1px 5px;margin-left:6px;">steady</span>' : '');
     const rc = recoveryCost(r);
     const flag = rc ? `<span style="font-size:10px;color:${rc.color};border:0.5px solid ${rc.color};border-radius:4px;padding:1px 5px;margin-left:6px;">${rc.flag}</span>` : '';
     const rcLine = rc ? `<div class="m" style="color:${rc.color};">${rc.msg} <span style="color:var(--text-mute);">(${rc.why})</span></div>` : '';
-    const idx = state.rides.indexOf(r);
     return `<div class="item"><div><div class="t" style="font-weight:500;">${r.title} <span style="font-size:12px;color:var(--text-mute);font-weight:400;">${r.date}</span>${badge}${flag}</div>
     <div class="m">${r.ef?'EF '+r.ef.toFixed(3)+' \u00b7 ':''}${r.vi?'VI '+r.vi.toFixed(2)+' \u00b7 ':''}${r.kcal?Math.round(r.kcal)+' kcal'+(r.burnSrc==='HR-est'?'(est)':'')+' \u00b7 ':''}${r.dur?r.dur+' \u00b7 ':''}${r.temp||''}</div>
     ${rcLine}
-    ${r.note?'<div class="m">'+r.note+'</div>':''}</div>
-    <button class="del" data-ride="${idx}">&times;</button></div>`;
+    ${r.note?'<div class="m">'+r.note+'</div>':''}</div></div>`;
   }).join('');
-  document.getElementById('rideList').querySelectorAll('[data-ride]').forEach(b=>b.onclick=()=>{
-    if(confirm('Delete this ride/workout entry?')){ state.rides.splice(+b.dataset.ride,1); save(state); renderRides(); }
-  });
 }
 
 let chkDate = todayKey();
@@ -744,7 +755,6 @@ function renderChecklist(){
   }).join('');
 
   document.getElementById('checklist').innerHTML = fixed + custom;
-  renderActivities();
 
   const wrap = document.getElementById('checklist');
   wrap.querySelectorAll('[data-chk]').forEach(cb=>cb.onchange=()=>{
@@ -765,59 +775,15 @@ function addChecklistItem(text){
   const tk = chkDate;
   if(!state.checklist[tk]) state.checklist[tk]={done:{},custom:[]};
   if(!state.checklist[tk].custom) state.checklist[tk].custom=[];
-  if(state.checklist[tk].custom.includes(text)) return; // avoid duplicate checklist lines
   state.checklist[tk].custom.push(text);
   save(state); renderChecklist();
 }
 
-// Dog walk kcal assumptions: brisk pace, ~4.25 kcal/min
-const DOG_WALK_PRESETS = {
-  'Dog walk (AM)': { dur:'25min', kcal:106 },
-  'Dog walk (PM)': { dur:'15min', kcal:64 }
-};
-
-function logActivity(text){
-  const tk = chkDate;
-  addChecklistItem(text);
-  // also mark it done, since logging = doing
-  if(!state.checklist[tk]) state.checklist[tk]={done:{},custom:[]};
-  const idx = state.checklist[tk].custom.indexOf(text);
-  if(idx>-1){ if(!state.checklist[tk].done) state.checklist[tk].done={}; state.checklist[tk].done['custom'+idx]=true; }
-
-  const preset = DOG_WALK_PRESETS[text];
-  if(preset){
-    const already = state.rides.some(r=>r.date===tk && r.title===text);
-    if(already){ alert(text+' is already logged for '+prettyDate(tk)+'. Delete it from the ride log first if you want to re-log it.'); }
-    else{
-      state.rides.push({ date:tk, title:text, ef:null, vi:null, type:'walk', z4min:null, z5min:null, surges:null,
-        kcal:preset.kcal, burnSrc:'estimate', dur:preset.dur, temp:'', note:'auto-logged, brisk pace ~4.25 kcal/min' });
-    }
-  }
-  save(state); renderChecklist(); renderActivities();
-}
-
-function renderActivities(){
-  const el = document.getElementById('activityList'); if(!el) return;
-  const tk = chkDate;
-  const acts = state.rides.filter(r=>r.type==='walk' && r.date===tk);
-  if(!acts.length){ el.innerHTML=''; return; }
-  el.innerHTML = acts.map(a=>{
-    const idx = state.rides.indexOf(a);
-    return `<div class="item" style="padding:6px 0;"><div><div class="t">${a.title}</div>
-    <div class="m">${a.kcal} kcal \u00b7 ${a.dur}</div></div>
-    <button class="del" data-act="${idx}">&times;</button></div>`;
-  }).join('');
-  el.querySelectorAll('[data-act]').forEach(b=>b.onclick=()=>{
-    state.rides.splice(+b.dataset.act,1); save(state); renderActivities(); renderFood(); drawBalance();
-  });
-}
-
 function renderAll(){
-  renderStats(); renderFood(); renderSaved(); renderRides(); renderChecklist(); renderWeek(); renderWeightLast(); renderFtpLast();
+  renderStats(); renderFood(); renderSaved(); renderRides(); renderChecklist(); renderWeek(); renderWeightLast();
   draw(); drawBalance(); drawMacros();
   const cb=document.getElementById('cfgBaseline'); if(cb) cb.value=state.config.baseline;
   const wd=document.getElementById('wDate'); if(wd && !wd.value) wd.value=todayKey();
-  const fd=document.getElementById('ftpDate'); if(fd && !fd.value) fd.value=todayKey();
 }
 
 document.getElementById('fAdd').onclick=()=>{
@@ -870,10 +836,7 @@ document.getElementById('chkNext').onclick=()=>{ if(chkDate<todayKey()){ chkDate
 document.getElementById('chkToday').onclick=()=>{ chkDate=todayKey(); renderChecklist(); };
 
 // Quick-add + custom checklist items
-document.querySelectorAll('.quickAdd').forEach(b=>b.onclick=()=>{
-  if(DOG_WALK_PRESETS[b.dataset.quick]) logActivity(b.dataset.quick);
-  else addChecklistItem(b.dataset.quick);
-});
+document.querySelectorAll('.quickAdd').forEach(b=>b.onclick=()=>addChecklistItem(b.dataset.quick));
 document.getElementById('chkAddBtn').onclick=()=>{
   const el=document.getElementById('chkAdd');
   addChecklistItem(el.value.trim()); el.value='';
@@ -968,27 +931,10 @@ function renderWeightLast(){
   el.textContent = `Last logged: ${w.lb.toFixed(1)} lb on ${w.date} \u00b7 W/kg ${(f.w/(w.lb*LB2KG)).toFixed(2)}`;
 }
 
-document.getElementById('ftpAdd').onclick=()=>{
-  const w=parseInt(document.getElementById('ftpW').value);
-  const d=document.getElementById('ftpDate').value || todayKey();
-  const note=document.getElementById('ftpNote').value.trim();
-  if(isNaN(w)||w<=0){ alert('Enter an FTP value in watts.'); return; }
-  state.ftp = state.ftp.filter(f=>f.date!==d);
-  state.ftp.push({ date:d, w, note: note||null });
-  save(state);
-  document.getElementById('ftpW').value=''; document.getElementById('ftpNote').value='';
-  renderStats(); draw(); renderWeightLast(); renderFtpLast();
-};
-function renderFtpLast(){
-  const el=document.getElementById('ftpLast'); if(!el) return;
-  const f=latest(state.ftp);
-  el.textContent = `Last logged: ${f.w}W on ${f.date}${f.note?' \u00b7 '+f.note:''}`;
-}
-
 document.getElementById('exportBtn').onclick=()=>{
   const blob=new Blob([JSON.stringify(state,null,2)],{type:'application/json'});
   const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='ledger_data_'+todayKey()+'.json'; a.click();
+  a.download='sharpen_data_'+todayKey()+'.json'; a.click();
 };
 document.getElementById('importBtn').onclick=()=>document.getElementById('importFile').click();
 document.getElementById('importFile').onchange=(e)=>{
@@ -998,131 +944,8 @@ document.getElementById('importFile').onchange=(e)=>{
   r.readAsText(file);
 };
 
-// --- Hints toggle (per-device preference, not synced) ---
-function applyHints(){
-  const on = localStorage.getItem('hintsOn') !== 'off';
-  document.body.classList.toggle('hintsOff', !on);
-  const btn = document.getElementById('hintsToggle');
-  if(btn) btn.textContent = 'Hints: ' + (on?'on':'off');
-}
-document.getElementById('hintsToggle').onclick = () => {
-  const on = localStorage.getItem('hintsOn') !== 'off';
-  localStorage.setItem('hintsOn', on ? 'off' : 'on');
-  applyHints();
-};
-applyHints();
-
-// --- Onboarding seed questions (brand-new accounts only) ---
-function renderOnboarding(isNew){
-  const wrap = document.getElementById('onboardWrap');
-  if(!wrap) return;
-  if(!isNew){ wrap.innerHTML=''; return; }
-  wrap.innerHTML = `
-    <div class="card" style="margin-top:10px;border-color:var(--accent);">
-      <p style="font-size:14px;line-height:1.6;margin-top:0;">First things first &mdash; a few real starting numbers instead of placeholders. Takes 20 seconds, and you can always change any of this later.</p>
-      <div class="row">
-        <div><label>Current weight (lb)</label><input id="obWeight" type="number" step="0.1" inputmode="decimal" placeholder="165"></div>
-        <div><label>Age</label><input id="obAge" type="number" inputmode="numeric" placeholder="35"></div>
-        <div><label>Current/estimated FTP (W)</label><input id="obFtp" type="number" inputmode="numeric" placeholder="180"></div>
-        <div><label>Daily baseline burn (kcal)</label><input id="obBaseline" type="number" inputmode="numeric" placeholder="2000"></div>
-      </div>
-      <p class="hint" style="margin:4px 0 10px;">Not sure on baseline? 15 &times; bodyweight in lb is a rough starting estimate &mdash; you'll dial it in from The Ledger over time.</p>
-      <button class="primary" id="obSave">Save & get started</button>
-      <button id="obSkip" style="margin-top:8px;">Skip for now</button>
-    </div>`;
-  document.getElementById('obSave').onclick = () => {
-    const lb = parseFloat(document.getElementById('obWeight').value);
-    const age = parseInt(document.getElementById('obAge').value);
-    const ftp = parseInt(document.getElementById('obFtp').value);
-    const baseline = parseInt(document.getElementById('obBaseline').value);
-    if(isNaN(lb)||lb<=0||isNaN(ftp)||ftp<=0){ alert('At least weight and FTP are needed to set things up.'); return; }
-    const tk = todayKey();
-    state.weights = [{ date:tk, lb }];
-    state.ftp = [{ date:tk, w:ftp, note:'starting estimate' }];
-    state.config = { baseline: (!isNaN(baseline)&&baseline>0)?baseline:Math.round(lb*15), weightLb:lb, age:(!isNaN(age)&&age>0)?age:DEFAULT_CONFIG.age, startFtp:ftp };
-    save(state);
-    renderAll();
-    dismissOnboarding();
-  };
-  document.getElementById('obSkip').onclick = dismissOnboarding;
-}
-function dismissOnboarding(){
-  const wrap = document.getElementById('onboardWrap'); if(wrap) wrap.innerHTML='';
-  const d = document.getElementById('helpDetails'); if(d) d.open = false;
-  if(!layout.hidden_cards.includes('help')) layout.hidden_cards.push('help');
-  applyLayout(); saveLayout();
-}
-const GUIDE_MD = `# Ledger of Small Miracles \u2014 quick guide
-
-## What this is
-One page for four things: what you eat, how you train, your weight/FTP, and a daily checklist.
-Everything rolls up into The Ledger (calories in vs. out) and the W/kg number at the top.
-
-## The cards
-- **The W/kg Watch** \u2014 FTP divided by body weight in kg, trended over time.
-- **Provisions** \u2014 food log. Step through days with the arrows, or paste a whole day at once.
-- **The Ledger** \u2014 14-day calories in vs. out. The "out" bar is stacked: baseline burn (just living) plus activity burn (rides/walks), in different colors. Hover any bar for the exact numbers.
-- **The Fine Print** \u2014 protein/carbs/fat trend over 14 days.
-- **The Week Ahead** \u2014 your training plan. Paste a whole week at once.
-- **Small Miracles, Daily** \u2014 daily checklist. Three fixed mobility items plus anything you add. The dog-walk quick-add buttons also log an estimated calorie burn.
-- **The Body of Evidence** \u2014 weight and FTP logging, both feed the W/kg number.
-- **Suffering, Logged** \u2014 every ride/workout. Paste a batch at once; each entry has a delete (\u00d7) button.
-- **Is it me or the meter?** \u2014 sanity-check your power meter against HR and heat.
-- **The Archive** \u2014 export/import a JSON backup of everything.
-
-## Paste formats
-Copy a block from the sample file (button next to this guide) and drop it straight into the matching paste box.
-
-**Food** (Provisions \u2192 "Paste a day's meals"): \`name | calories | protein g | carbs g | fat g\`
-**Plan** (The Week Ahead \u2192 "Paste a plan block"): \`YYYY-MM-DD | what | where/notes\`
-**Rides** (Suffering, Logged \u2192 "Paste a ride or workout"): \`YYYY-MM-DD | title | duration | calories | notes\`
-
-Calories/protein/carbs/fat/notes can usually be left blank if you don't know them \u2014 the app just treats them as zero or empty.
-
-## Hints
-Every card has a small circled "?" \u2014 hover it for a one-line explanation. Turn them all off with the "Hints" button at the top if they're in your way; the setting is remembered on this device only.
-
-## Layout
-"Edit layout" (top right) lets you reorder cards with \u2191/\u2193 or hide ones you don't use. Hidden cards stay hidden until you show them again from the same menu \u2014 this is per-account and syncs across devices.
-
-## Your data
-You're signed in with your own account, so your data follows you to any device once you sign in \u2014 nothing is shared with other accounts. "Export data" downloads a full JSON backup; "Import data" restores from one. Useful for a manual backup or moving to a new browser.
-
-## Dog walks
-"+ Dog walk AM/PM" in Small Miracles, Daily checks off the task and logs an estimated calorie burn (25min AM \u2248 106 kcal, 15min PM \u2248 64 kcal, brisk pace) that feeds The Ledger automatically. Clicking the same one twice in a day won't double-log it. "Hotel circuit" is checklist-only, no calorie estimate.
-`;
-
-const SAMPLE_PASTE_TXT = `Sample data for Ledger of Small Miracles
-Copy the block under each heading and paste it into the matching box in the app.
-
-== FOOD (paste into Provisions \u2192 "Paste a day's meals") ==
-Chicken burrito bowl | 620 | 48 | 55 | 18
-Greek yogurt | 150 | 20 | 10 | 3
-Coffee with cream | 40
-
-== PLAN (paste into The Week Ahead \u2192 "Paste a plan block") ==
-2026-01-06 | Z2 endurance 2hr | easy spin, keep HR under 140
-2026-01-07 | Rest + mobility |
-2026-01-08 | VO2 5x3min @240W | KICKR basement, 3min recovery between
-
-== RIDES (paste into Suffering, Logged \u2192 "Paste a ride or workout") ==
-2026-01-06 | Z2 endurance | 2h10 | 950 | easy spin, felt good
-2026-01-08 | VO2 5x3min | 1h05 | 720 | hard, legs were flat
-`;
-
-document.getElementById('dlGuide').onclick=()=>{
-  const blob=new Blob([GUIDE_MD],{type:'text/markdown'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='ledger-of-small-miracles-guide.md'; a.click();
-};
-document.getElementById('dlSample').onclick=()=>{
-  const blob=new Blob([SAMPLE_PASTE_TXT],{type:'text/plain'});
-  const a=document.createElement('a'); a.href=URL.createObjectURL(blob);
-  a.download='ledger-sample-paste-data.txt'; a.click();
-};
-
 // --- Card layout (reorder / hide) ---
-const CARD_ORDER_DEFAULT = ['help','stats','wkg','food','balance','macros','week','checklist','weight','rides','meter'];
+const CARD_ORDER_DEFAULT = ['stats','wkg','food','balance','macros','week','checklist','weight','rides','meter'];
 let layout = { card_order: CARD_ORDER_DEFAULT.slice(), hidden_cards: [] };
 
 function applyLayout(){
@@ -1213,10 +1036,6 @@ async function initApp(){
   renderAll();
   await loadLayout();
   applyLayout();
-  renderOnboarding(lastPullWasNew);
-  if(lastPullWasNew){
-    const d = document.getElementById('helpDetails'); if(d) d.open = true;
-  }
 }
 
 let authMode = 'signin';
