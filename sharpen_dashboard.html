@@ -587,19 +587,30 @@ function drawBalance(){
   const el=document.getElementById('balanceChart'); if(!el) return;
   const days=last14();
   const consumed=days.map(d=>dayFood(d).kcal);
-  const burned=days.map(d=>state.config.baseline+dayBurn(d));
+  const baseline=days.map(()=>state.config.baseline);
+  const activity=days.map(d=>dayBurn(d));
+  const burned=days.map((d,i)=>baseline[i]+activity[i]);
   const net=days.map((d,i)=>consumed[i]-burned[i]);
   if(balChart) balChart.destroy();
   balChart=new Chart(el,{ data:{ labels:days.map(d=>d.slice(5)),
     datasets:[
-      { type:'bar', data:consumed, backgroundColor:'rgba(57,135,229,0.75)', label:'In', order:2 },
-      { type:'bar', data:burned, backgroundColor:'rgba(235,104,52,0.55)', label:'Out', order:2 },
+      { type:'bar', data:consumed, backgroundColor:'rgba(57,135,229,0.75)', label:'In', stack:'in', order:2 },
+      { type:'bar', data:baseline, backgroundColor:'rgba(235,104,52,0.55)', label:'Baseline', stack:'out', order:2 },
+      { type:'bar', data:activity, backgroundColor:'rgba(235,104,52,0.95)', label:'Activity', stack:'out', order:2 },
       { type:'line', data:net, borderColor:'#199e70', borderWidth:2, pointRadius:2, tension:0.2, label:'Net', order:1, yAxisID:'y2' }
     ]},
-    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false}},
-      scales:{ y:{ticks:{color:'#6b7684',font:{size:10}},grid:{color:'rgba(107,118,132,0.12)'}},
+    options:{ responsive:true, maintainAspectRatio:false, plugins:{legend:{display:false},
+      tooltip:{ mode:'index', intersect:false,
+        callbacks:{
+          label:(ctx)=> ctx.dataset.label+': '+Math.round(ctx.parsed.y),
+          afterBody:(items)=>{
+            const i=items[0].dataIndex;
+            return 'Out total: '+Math.round(burned[i])+'  \u00b7  Net: '+Math.round(net[i]);
+          }
+        } } },
+      scales: { y:{stacked:true, ticks:{color:'#6b7684',font:{size:10}},grid:{color:'rgba(107,118,132,0.12)'}},
         y2:{position:'right',ticks:{color:'#199e70',font:{size:10}},grid:{display:false},suggestedMin:-1500,suggestedMax:1500},
-        x:{ticks:{color:'#6b7684',font:{size:9},maxRotation:0},grid:{display:false}} } }
+        x:{stacked:true, ticks:{color:'#6b7684',font:{size:9},maxRotation:0},grid:{display:false}} } }
   });
 }
 function drawMacros(){
